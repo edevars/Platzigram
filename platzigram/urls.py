@@ -16,9 +16,11 @@ urlpatterns = [
     path('hello-world/', local_views.hello_world,  name="hello_world"),
     path('date-time/', local_views.see_date_time, name="date"),
     path('sort/', local_views.sort_numbers, name="sort"),
-    path('access/<str:name>/<int:age>', local_views.get_access_by_age, name="validate_age"),
+    path('access/<str:name>/<int:age>',
+         local_views.get_access_by_age, name="validate_age"),
 
     # Platzigram
     path('posts/', posts_views.list_posts, name="feed"),
-    path('users/login', users_views.login_view, name="login")
+    path('users/login', users_views.login_view, name="login"),
+    path('users/logout', users_views.logout_view, name="logout"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -6,8 +6,11 @@
       style="border-right: 1px solid #efefef;"
       href=""
     >
-      <img src="{% static 'img/instagram.jpg' %}" height="45"
-      class="d-inline-block align-top"/>
+      <img
+        src="{% static 'img/instagram.jpg' %}"
+        height="45"
+        class="d-inline-block align-top"
+      />
     </a>
 
     <div class="collapse navbar-collapse">
@@ -29,7 +32,7 @@
         </li>
 
         <li class="nav-item nav-icon">
-          <a href="">
+          <a href="{% url 'logout' %}">
             <i class="fas fa-sign-out-alt"></i>
           </a>
         </li>
