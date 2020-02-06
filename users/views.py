@@ -11,6 +11,10 @@ from django.db.utils import IntegrityError
 from users.models import Profile
 
 
+def update_profile(request):
+    return render(request, 'users/update_profile.html')
+
+
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('feed')
