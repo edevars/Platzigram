@@ -15,7 +15,14 @@ class PostFeedView(LoginRequiredMixin, ListView):
     template_name = 'posts/feed.html'
     model = Post
     ordering = '-created'
+    paginate_by = 30
     context_object_name = 'posts'
+
+
+class PostDetailView(LoginRequiredMixin, ListView):
+    template_name = 'posts/detail.html'
+    model = Post.objects.all()
+    context_object_name = 'post'
 
 
 @login_required
