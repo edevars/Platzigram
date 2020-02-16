@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView
-from django.urls import reverse
+from django.views.generic import TemplateView, FormView
+from django.urls import reverse, reverse_lazy
 
 # Models
 from django.contrib.auth.models import User
@@ -16,7 +16,7 @@ from users.forms import ProfileForm, SignupForm
 from django.views.generic.detail import DetailView
 
 
-class UserDetailView(LoginRequiredMixin,DetailView):
+class UserDetailView(LoginRequiredMixin, DetailView):
     """User detail View"""
 
     template_name = 'users/detail.html'
@@ -82,26 +82,27 @@ def login_view(request):
     return render(request, 'users/login.html')
 
 
-def sign_up_view(request):
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            data = form.save()
-            user = authenticate(
-                request, username=data['username'], password=data['password'])
-            if user:
-                login(request, user)
-                return redirect('posts:feed')
-            else:
-                return redirect('users:login')
-    else:
-        form = SignupForm()
+class SignUpView(FormView):
+    """Users signup view"""
+    template_name = "users/signup.html"
+    form_class = SignupForm
+    success_url = reverse_lazy('posts:feed')
 
-    return render(
-        request=request,
-        template_name='users/signup.html',
-        context={'form': form}
-    )
+    def form_valid(self, form):
+        form.save()
+
+        username = form['username'].value()
+        password = form['password'].value()
+
+        user = authenticate(
+            self.request, username=username, password=password)
+
+        if user:
+            login(self.request, user)
+            return redirect('posts:feed')
+        else:
+            return redirect('users:login')
+
 
 
 @login_required
